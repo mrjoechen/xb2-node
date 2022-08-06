@@ -1,4 +1,4 @@
-import { Request, Response, NextFunction, response } from 'express';
+import e, { Request, Response, NextFunction, response } from 'express';
 // import { getPosts } from './post.service';
 
 import _ from 'lodash';
@@ -17,8 +17,14 @@ export const index = async (
     const posts = await getPosts();
     response.send(posts);
   } catch (error) {
+    console.log(error);
     next(error);
   }
+
+  // tryAndCatch(next, async ()=> {
+  //   const posts = await getPosts();
+  //   response.send(posts);
+  // })
 };
 
 export const update = async (
@@ -51,3 +57,12 @@ export const store = async (
     next(error);
   }
 };
+
+function tryAndCatch(next: NextFunction, block: () => any) {
+  try {
+    block();
+  } catch (error) {
+    next(error);
+    console.log(error);
+  }
+}
