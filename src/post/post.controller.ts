@@ -2,7 +2,7 @@ import e, { Request, Response, NextFunction, response } from 'express';
 // import { getPosts } from './post.service';
 
 import _ from 'lodash';
-import { createPost, getPosts, updatePost } from './post.service';
+import { createPost, deletePost, getPosts, updatePost } from './post.service';
 
 export const index = async (
   request: Request,
@@ -54,6 +54,23 @@ export const store = async (
     const data = await createPost({ title, content });
     response.status(201).send(data);
   } catch (error) {
+    console.log(error)
+    next(error);
+  }
+};
+
+export const destory = async (
+  request: Request,
+  response: Response,
+  next: NextFunction,
+) => {
+  const { postId } = request.params;
+
+  try {
+    const data = await deletePost(parseInt(postId, 10));
+    response.send(data);
+  } catch (error) {
+    console.log(error)
     next(error);
   }
 };
