@@ -16,7 +16,7 @@ export const validateUserData = async (
     if(!password) return next(new Error('PASSWORD_IS_REQUIRED'));
 
     const user = await userService.getUserByName(name);
-    if (user) return next(new Error('USER_ALREADY_EXIST'));
+    if (!user) return next(new Error('USER_ALREADY_EXIST'));
     console.log(user);
     next();
 }

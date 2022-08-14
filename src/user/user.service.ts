@@ -14,9 +14,10 @@ interface GetUserOptions {
     password?: boolean
 }
 
-export const getUserByName =async (name:string) => {
-    const statement = `SELECT id, name FROM user WHERE name = ?`;
+export const getUserByName =async (name: string, options: GetUserOptions = {}) => {
+    const { password } = options;
 
+    const statement = `SELECT id, name ${password ? ', password': ''} FROM user WHERE name = ?`;
     const [data] = await connection.promise().query(statement, name);
 
     return data[0];
