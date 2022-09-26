@@ -14,11 +14,10 @@
         "incremental": true
 
     },
-    "include": [
-        "src/**/*"
-    ],
+    "include": ["src/**/*"],
     "exclude": [
         "node_module",
         "dist"
-    ]
+    ],
+    "files": ["types/express.d.ts"]
 }

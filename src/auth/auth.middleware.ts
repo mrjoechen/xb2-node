@@ -3,6 +3,7 @@ import * as userService from '../user/user.service';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { PUBLIC_KEY } from '../app/app.config';
+import { TokenPayload } from './auth.interface';
 
 export const validateLoginData = async (
   request: Request,
@@ -38,13 +39,21 @@ export const authGuard = (
   console.log('验证用户身份');
 
   try {
-    const token = request.header('Authorization');
+    const authorization = request.header('Authorization');
+    if (!authorization) throw new Error();
+
+    const token = authorization.replace('Bearer ', '');
     if (!token) throw new Error();
 
-    jwt.verify(token, PUBLIC_KEY, {
+    const decoded = jwt.verify(token, PUBLIC_KEY, {
       algorithms: ['ES256'],
     });
+
+    // error
+    // request.user = decoded as TokenPayload;
+    next();
   } catch (error) {
     console.log(error);
+    next(new Error('UNAUTHORIZED'));
   }
 };
